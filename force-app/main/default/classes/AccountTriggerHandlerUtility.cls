@@ -7,22 +7,18 @@ public class AccountTriggerHandlerUtility {
          
          //Iterating over acc List
          for(account acc : accountList){
-             
                //Creating instance for team member
-               SQX_Team_Members__c teamMember1 = new SQX_Team_Members__c();
-               teamMember1.name = 'Team Member 1';
-               teamMember1.Account__c = acc.Id;
+               SQX_Team_Members__c teamMember1 = createTeamMemberInstance(acc.Id,'Team Member 1');
                teamMemberList.add(teamMember1);
              
-               SQX_Team_Members__c teamMember2 = new SQX_Team_Members__c();
-               teamMember2.name = 'Team Member 2';
-               teamMember2.Account__c = acc.Id;
+               SQX_Team_Members__c teamMember2 = createTeamMemberInstance(acc.Id,'Team Member 2');
                teamMemberList.add(teamMember2);
          }
          
          try{
              if(!teamMemberList.IsEmpty()){
                   insert teamMemberList;
+                  system.debug('teamMemberList ==> '+teamMemberList);
              }
          }
          catch(exception e){
@@ -30,6 +26,8 @@ public class AccountTriggerHandlerUtility {
          }
         
     }
+    
+    
     
     public static void handleBeforeInsertValidations(List<Account>accnewList){
         for(account acc : accNewList){
@@ -46,7 +44,6 @@ public class AccountTriggerHandlerUtility {
         Boolean isAccountAdminPermissionSetAssigned = checkAccountAdminPermissionSetAssignemnt();
        
         for(account acc : accnewList){
-            
             if(acc.Active__c != oldAccMap.get(acc.Id).Active__c && acc.Active__c == true && isAccountAdminPermissionSetAssigned == false && !Test.IsRunningTest()){
                  acc.addError('Can not activate account,Permission Set not assigned');
             }
@@ -54,7 +51,6 @@ public class AccountTriggerHandlerUtility {
                  acc.addError('Can noot activate account,Team member type should be HR or Admin.');
             }
         }
-        
     }
     
     
@@ -111,8 +107,17 @@ public class AccountTriggerHandlerUtility {
                 result = true;
          }
         }
-        
+     
         return result;
       }
+    
+    public static SQX_Team_Members__c createTeamMemberInstance(String accountId , String name){
+        
+               SQX_Team_Members__c teamMember = new SQX_Team_Members__c();
+               teamMember.name = name;
+               teamMember.Account__c = accountId;
+        
+        return teamMember;
+    }
 
 }
