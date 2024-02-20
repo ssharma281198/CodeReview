@@ -44,7 +44,7 @@ public class AccountTriggerHandlerUtility {
         Boolean isAccountAdminPermissionSetAssigned = checkAccountAdminPermissionSetAssignemnt();
        
         for(account acc : accnewList){
-            if(acc.Active__c != oldAccMap.get(acc.Id).Active__c && acc.Active__c == true && isAccountAdminPermissionSetAssigned == false && !Test.IsRunningTest()){
+            if(acc.Active__c != oldAccMap.get(acc.Id).Active__c && acc.Active__c == true && isAccountAdminPermissionSetAssigned == false ){
                  acc.addError('Can not activate account,Permission Set not assigned');
             }
             if(acc.Active__c != oldAccMap.get(acc.Id).Active__c && acc.Active__c == true && accountIdVsTeamMemberResultMap.get(acc.Id) == false && isAccountAdminPermissionSetAssigned == true){

@@ -25,6 +25,10 @@ private class AccountTriggerHandlerUtilityTest {
             // Start test execution
             Test.startTest();
             
+             PermissionSetAssignment testPermissionSetAssignment = new PermissionSetAssignment(AssigneeId = adminUser.Id, PermissionSetId = [SELECT Id FROM PermissionSet WHERE Name = 'Account_Admin' LIMIT 1].Id);
+             insert testPermissionSetAssignment;
+        
+            
             // Create test data
             Account acc = new Account(Name = 'Test Account', Active__c = false);
             insert acc;
@@ -78,7 +82,10 @@ private class AccountTriggerHandlerUtilityTest {
         System.runAs(stdUser) {
             // Start test execution
             Test.startTest();
-            
+             
+             PermissionSetAssignment testPermissionSetAssignment = new PermissionSetAssignment(AssigneeId = stdUser.Id, PermissionSetId = [SELECT Id FROM PermissionSet WHERE Name = 'Account_Admin' LIMIT 1].Id);
+             insert testPermissionSetAssignment;
+        
             Account acc = new Account(Name = 'Test Account', Active__c = false);
             insert acc;
             
